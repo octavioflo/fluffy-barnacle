@@ -11,5 +11,7 @@ CREATE TABLE habit (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
     description VARCHAR(255),
-    date_created DATE
+    date_created DATE,
+    punishment_id BIGINT,
+    CONSTRAINT fk_punishment FOREIGN KEY (punishment_id) REFERENCES punishment(id)
 );
