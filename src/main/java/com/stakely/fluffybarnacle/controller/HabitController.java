@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/habits")
@@ -27,20 +28,24 @@ public class HabitController {
     return habitService.getHabits();
   }
 
+  @GetMapping("/{id}")
+  public Habit getHabitById(@PathVariable UUID id) {
+    return habitService.getHabitById(id);
+  }
+
   @PostMapping
   public Habit createHabit(@RequestBody Habit habit) {
     return habitService.createHabit(habit);
   }
 
   @GetMapping("/{id}/completions")
-  public List<HabitCompletion> getCompletions(@PathVariable Long id) {
+  public List<HabitCompletion> getCompletions(@PathVariable UUID id) {
     return completionService.findByHabitId(id);
   }
 
   @PostMapping("/{id}/completions")
   public HabitCompletion markCompletion(
-      @PathVariable Long id, @RequestBody HabitCompletionRequestDto request) {
-    // TODO: There's a bug where the completion date is added recursively.
-    return completionService.markHabitCompleted(id, request.getDate());
+      @PathVariable UUID id, @RequestBody HabitCompletionRequestDto request) {
+    return completionService.markHabitCompleted(id, request.getDateCompleted());
   }
 }

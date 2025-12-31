@@ -5,6 +5,7 @@ import com.stakely.fluffybarnacle.repository.HabitRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class HabitService {
@@ -17,6 +18,10 @@ public class HabitService {
 
   public List<Habit> getHabits() {
     return habitRepository.findAll();
+  }
+
+  public Habit getHabitById(UUID id) {
+    return habitRepository.findById(id).orElse(null);
   }
 
   public Habit createHabit(Habit habit) {

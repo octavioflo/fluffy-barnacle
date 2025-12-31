@@ -5,6 +5,7 @@ import com.stakely.fluffybarnacle.repository.PunishmentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PunishmentService {
@@ -23,7 +24,7 @@ public class PunishmentService {
     return punishmentRepository.save(punishment);
   }
 
-  public Punishment getPunishmentById(Long id) {
+  public Punishment getPunishmentById(UUID id) {
     return punishmentRepository.findById(id).orElse(null);
   }
 
