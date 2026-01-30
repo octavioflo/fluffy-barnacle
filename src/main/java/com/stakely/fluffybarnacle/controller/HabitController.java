@@ -5,9 +5,11 @@ import com.stakely.fluffybarnacle.model.Habit;
 import com.stakely.fluffybarnacle.model.HabitCompletion;
 import com.stakely.fluffybarnacle.service.HabitCompletionService;
 import com.stakely.fluffybarnacle.service.HabitService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.time.LocalDate;
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,8 +36,15 @@ public class HabitController {
   }
 
   @PostMapping
-  public Habit createHabit(@RequestBody Habit habit) {
-    return habitService.createHabit(habit);
+  public ResponseEntity<Habit> createHabit(@RequestBody Habit habit) {
+
+    Habit newHabit = habitService.createHabit(habit);
+    URI location =
+        ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(newHabit.getId())
+            .toUri();
+    return ResponseEntity.created(location).body(habit);
   }
 
   @GetMapping("/{id}/completions")
