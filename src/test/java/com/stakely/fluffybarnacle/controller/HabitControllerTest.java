@@ -1,7 +1,10 @@
 package com.stakely.fluffybarnacle.controller;
 
+import com.stakely.fluffybarnacle.dto.HabitCompletionRequestDto;
 import com.stakely.fluffybarnacle.model.Habit;
+import com.stakely.fluffybarnacle.model.HabitCompletion;
 import com.stakely.fluffybarnacle.model.Punishment;
+import com.stakely.fluffybarnacle.service.HabitCompletionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
+import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,16 +35,28 @@ public class HabitControllerTest {
   @Autowired private MockMvc mockMvc;
 
   private Habit habit;
+  private HabitCompletion habitCompletion;
 
   @MockitoBean private HabitController habitController;
+  @MockitoBean private HabitCompletionService habitCompletionService;
 
   @BeforeEach
   void setup() {
     habit = new Habit();
-    UUID uuid = UUID.randomUUID();
-    habit.setId(uuid);
+    habitCompletion = new HabitCompletion();
+
+    UUID habitUuid = UUID.randomUUID();
+    habit.setId(habitUuid);
     habit.setName("Test Habit");
     habit.setDescription("Test Habit");
+    habit.setDateCreated(LocalDate.now());
+
+    UUID habitCompletionUuid = UUID.randomUUID();
+    habitCompletion.setId(habitCompletionUuid);
+    habitCompletion.setHabit(habit);
+    habitCompletion.setDateCompleted(LocalDate.now());
+
+    habit.setCompletions(List.of(habitCompletion));
     habit.setPunishment(new Punishment());
   }
 
@@ -73,8 +90,7 @@ public class HabitControllerTest {
   void testCreateHabit() throws Exception {
     given(habitController.createHabit(any(Habit.class)))
         .willReturn(
-            ResponseEntity.created(java.net.URI.create("/api/v1/habits/" + habit.getId()))
-                .body(habit));
+            ResponseEntity.created(URI.create("/api/v1/habits/" + habit.getId())).body(habit));
 
     ObjectMapper mapper = new ObjectMapper();
     String habitAsJson = mapper.writeValueAsString(habit);
@@ -88,5 +104,49 @@ public class HabitControllerTest {
         .andExpect(jsonPath("$.description").value("Test Habit"));
 
     verify(habitController).createHabit(habit);
+  }
+
+  @Test
+  void testGetCompletions() throws Exception {
+    given(habitController.getCompletions(habit.getId())).willReturn(List.of(habitCompletion));
+
+    mockMvc
+        .perform(get("/api/v1/habits/" + habit.getId() + "/completions"))
+        .andExpect(status().isOk())
+        .andExpect(
+            jsonPath("$[0].dateCompleted").value(habitCompletion.getDateCompleted().toString()));
+
+    verify(habitController).getCompletions(habit.getId());
+  }
+
+  @Test
+  void testMarkCompletion() throws Exception {
+    given(
+            habitController.markCompletion(
+                habit.getId(), new HabitCompletionRequestDto(habitCompletion.getDateCompleted())))
+        .willReturn(
+            ResponseEntity.created(URI.create("/api/v1/habits/" + habit.getId() + "/completions"))
+                .body(List.of(new HabitCompletionRequestDto(habitCompletion.getDateCompleted()))));
+
+    ObjectMapper mapper = new ObjectMapper();
+    String completionRequestAsJson =
+        mapper.writeValueAsString(
+            new HabitCompletionRequestDto(habitCompletion.getDateCompleted()));
+
+    mockMvc
+        .perform(
+            post("/api/v1/habits/" + habit.getId() + "/completions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(completionRequestAsJson))
+        .andExpect(status().isCreated())
+        .andExpect(header().string("Location", "/api/v1/habits/" + habit.getId() + "/completions"))
+        .andExpect(
+            jsonPath("$[0].dateCompleted").value(habitCompletion.getDateCompleted().toString()));
+
+    verify(habitController)
+        .markCompletion(
+            habit.getId(),
+            new com.stakely.fluffybarnacle.dto.HabitCompletionRequestDto(
+                habitCompletion.getDateCompleted()));
   }
 }

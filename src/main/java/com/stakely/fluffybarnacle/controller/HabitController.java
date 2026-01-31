@@ -53,8 +53,17 @@ public class HabitController {
   }
 
   @PostMapping("/{id}/completions")
-  public HabitCompletion markCompletion(
+  public ResponseEntity<List<HabitCompletionRequestDto>> markCompletion(
       @PathVariable UUID id, @RequestBody HabitCompletionRequestDto request) {
-    return completionService.markHabitCompleted(id, request.getDateCompleted());
+    HabitCompletion habitCompletion =
+        completionService.markHabitCompleted(id, request.getDateCompleted());
+    HabitCompletionRequestDto responseDto =
+        new HabitCompletionRequestDto(habitCompletion.getDateCompleted());
+    URI location =
+        ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{completionId}")
+            .buildAndExpand(habitCompletion.getId())
+            .toUri();
+    return ResponseEntity.created(location).body(List.of(responseDto));
   }
 }

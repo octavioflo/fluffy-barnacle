@@ -7,6 +7,9 @@ import java.util.UUID;
 
 @Data
 public class HabitCompletionRequestDto {
-  private UUID id;
   private LocalDate dateCompleted;
+
+  public HabitCompletionRequestDto(LocalDate dateCompleted) {
+    this.dateCompleted = dateCompleted;
+  }
 }
