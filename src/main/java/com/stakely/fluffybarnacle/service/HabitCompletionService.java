@@ -1,6 +1,7 @@
 package com.stakely.fluffybarnacle.service;
 
-import com.stakely.fluffybarnacle.dto.HabitCompletionRequestDto;
+import com.stakely.fluffybarnacle.dto.HabitCompletionResponseDto;
+import com.stakely.fluffybarnacle.dto.HabitResponseDto;
 import com.stakely.fluffybarnacle.model.Habit;
 import com.stakely.fluffybarnacle.model.HabitCompletion;
 import com.stakely.fluffybarnacle.repository.HabitCompletionRepository;
@@ -25,8 +26,11 @@ public class HabitCompletionService {
     this.habitRepository = habitRepository;
   }
 
-  public List<HabitCompletion> findByHabitId(UUID habitId) {
-    return habitCompletionRepository.findByHabitId(habitId);
+  public List<HabitCompletionResponseDto> findByHabitId(UUID habitId) {
+    List<HabitCompletion> habitCompletion = habitCompletionRepository.findByHabitId(habitId);
+    return habitCompletion.stream()
+        .map(completion -> new HabitCompletionResponseDto(completion.getDateCompleted()))
+        .toList();
   }
 
   @Transactional
