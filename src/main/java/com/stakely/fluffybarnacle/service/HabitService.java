@@ -1,8 +1,10 @@
 package com.stakely.fluffybarnacle.service;
 
-import com.stakely.fluffybarnacle.dto.HabitRequestDto;
-import com.stakely.fluffybarnacle.dto.HabitResponseDto;
+import com.stakely.fluffybarnacle.dto.habit.HabitRequestDto;
+import com.stakely.fluffybarnacle.dto.habit.HabitResponseDto;
+import com.stakely.fluffybarnacle.dto.punishment.PunishmentRequestDto;
 import com.stakely.fluffybarnacle.model.Habit;
+import com.stakely.fluffybarnacle.model.Punishment;
 import com.stakely.fluffybarnacle.repository.HabitRepository;
 import org.springframework.stereotype.Service;
 
@@ -51,13 +53,15 @@ public class HabitService {
   }
 
   public HabitResponseDto createHabit(HabitRequestDto habit) {
+    PunishmentRequestDto punishmentRequestDto = habit.getPunishment();
+
     Habit newHabit =
         habitRepository.save(
             new Habit(
                 habit.getName(),
                 habit.getDescription(),
                 LocalDate.now(),
-                habit.getPunishment(),
+                new Punishment(punishmentRequestDto.getType(), punishmentRequestDto.getDetails()),
                 new ArrayList<>()));
     return new HabitResponseDto(
         newHabit.getId(),

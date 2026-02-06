@@ -1,8 +1,8 @@
 package com.stakely.fluffybarnacle.controller;
 
-import com.stakely.fluffybarnacle.dto.HabitCompletionResponseDto;
-import com.stakely.fluffybarnacle.dto.HabitRequestDto;
-import com.stakely.fluffybarnacle.dto.HabitResponseDto;
+import com.stakely.fluffybarnacle.dto.habit.HabitCompletionResponseDto;
+import com.stakely.fluffybarnacle.dto.habit.HabitRequestDto;
+import com.stakely.fluffybarnacle.dto.habit.HabitResponseDto;
 import com.stakely.fluffybarnacle.model.HabitCompletion;
 import com.stakely.fluffybarnacle.service.HabitCompletionService;
 import com.stakely.fluffybarnacle.service.HabitService;
@@ -56,7 +56,7 @@ public class HabitController {
 
   @PostMapping("/{id}/completions")
   public ResponseEntity<List<HabitCompletionResponseDto>> markCompletion(
-      @PathVariable UUID id, @RequestBody HabitCompletionResponseDto request) {
+      @PathVariable UUID id, @Valid @RequestBody HabitCompletionResponseDto request) {
     HabitCompletion habitCompletion =
         completionService.markHabitCompleted(id, request.getDateCompleted());
     HabitCompletionResponseDto responseDto =

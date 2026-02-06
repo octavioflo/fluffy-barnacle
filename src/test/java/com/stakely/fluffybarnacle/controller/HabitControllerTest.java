@@ -1,8 +1,10 @@
 package com.stakely.fluffybarnacle.controller;
 
-import com.stakely.fluffybarnacle.dto.HabitCompletionResponseDto;
-import com.stakely.fluffybarnacle.dto.HabitRequestDto;
-import com.stakely.fluffybarnacle.dto.HabitResponseDto;
+import com.stakely.fluffybarnacle.dto.habit.HabitCompletionResponseDto;
+import com.stakely.fluffybarnacle.dto.habit.HabitRequestDto;
+import com.stakely.fluffybarnacle.dto.habit.HabitResponseDto;
+import com.stakely.fluffybarnacle.dto.punishment.PunishmentRequestDto;
+import com.stakely.fluffybarnacle.dto.punishment.PunishmentResponseDto;
 import com.stakely.fluffybarnacle.model.HabitCompletion;
 import com.stakely.fluffybarnacle.model.Punishment;
 import com.stakely.fluffybarnacle.service.HabitCompletionService;
@@ -39,8 +41,8 @@ public class HabitControllerTest {
   private HabitRequestDto habitRequestDto;
   private HabitCompletion habitCompletion;
   private HabitCompletionResponseDto habitCompletionResponseDto;
-
   private UUID habitUuid;
+
   @MockitoBean private HabitController habitController;
   @MockitoBean private HabitCompletionService habitCompletionService;
 
@@ -48,7 +50,7 @@ public class HabitControllerTest {
   void setup() {
     habitCompletion = new HabitCompletion();
     habitUuid = UUID.randomUUID();
-    habitRequestDto = new HabitRequestDto("Test Habit", "Test Habit", new Punishment());
+    habitRequestDto = new HabitRequestDto("Test Habit", "Test Habit", new PunishmentRequestDto());
     habitResponseDto =
         new HabitResponseDto(
             habitUuid, "Test Habit", "Test Habit", LocalDate.now(), new Punishment(), List.of());

@@ -1,5 +1,7 @@
 package com.stakely.fluffybarnacle.service;
 
+import com.stakely.fluffybarnacle.dto.punishment.PunishmentRequestDto;
+import com.stakely.fluffybarnacle.dto.punishment.PunishmentResponseDto;
 import com.stakely.fluffybarnacle.model.Punishment;
 import com.stakely.fluffybarnacle.repository.PunishmentRepository;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,21 @@ public class PunishmentService {
     this.punishmentRepository = punishmentRepository;
   }
 
-  public List<Punishment> getPunishments() {
-    return punishmentRepository.findAll();
+  public List<PunishmentResponseDto> getPunishments() {
+    List<Punishment> punishments = punishmentRepository.findAll();
+    return punishments.stream()
+        .map(
+            punishment ->
+                new PunishmentResponseDto(
+                    punishment.getId(), punishment.getType(), punishment.getDetails()))
+        .toList();
   }
 
-  public Punishment createPunishment(Punishment punishment) {
-    return punishmentRepository.save(punishment);
+  public PunishmentResponseDto createPunishment(PunishmentRequestDto punishment) {
+    Punishment newPunishment = new Punishment(punishment.getType(), punishment.getDetails());
+    punishmentRepository.save(newPunishment);
+    return new PunishmentResponseDto(
+        newPunishment.getId(), newPunishment.getType(), newPunishment.getDetails());
   }
 
   public Punishment getPunishmentById(UUID id) {

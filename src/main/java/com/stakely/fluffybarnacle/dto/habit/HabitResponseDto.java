@@ -1,4 +1,4 @@
-package com.stakely.fluffybarnacle.dto;
+package com.stakely.fluffybarnacle.dto.habit;
 
 import com.stakely.fluffybarnacle.model.HabitCompletion;
 import com.stakely.fluffybarnacle.model.Punishment;

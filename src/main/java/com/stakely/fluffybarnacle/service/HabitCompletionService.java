@@ -1,7 +1,6 @@
 package com.stakely.fluffybarnacle.service;
 
-import com.stakely.fluffybarnacle.dto.HabitCompletionResponseDto;
-import com.stakely.fluffybarnacle.dto.HabitResponseDto;
+import com.stakely.fluffybarnacle.dto.habit.HabitCompletionResponseDto;
 import com.stakely.fluffybarnacle.model.Habit;
 import com.stakely.fluffybarnacle.model.HabitCompletion;
 import com.stakely.fluffybarnacle.repository.HabitCompletionRepository;
