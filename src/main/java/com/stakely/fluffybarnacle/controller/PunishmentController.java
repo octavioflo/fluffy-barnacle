@@ -2,8 +2,9 @@ package com.stakely.fluffybarnacle.controller;
 
 import com.stakely.fluffybarnacle.dto.punishment.PunishmentRequestDto;
 import com.stakely.fluffybarnacle.dto.punishment.PunishmentResponseDto;
-import com.stakely.fluffybarnacle.model.Punishment;
 import com.stakely.fluffybarnacle.service.PunishmentService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1/punishments")
 public class PunishmentController {
 
-  PunishmentService punishmentService;
-
-  public PunishmentController(PunishmentService punishmentService) {
-    this.punishmentService = punishmentService;
-  }
+  @Autowired PunishmentService punishmentService;
 
   @GetMapping
   public List<PunishmentResponseDto> getPunishments() {
@@ -30,7 +27,8 @@ public class PunishmentController {
   }
 
   @PostMapping
-  public ResponseEntity<PunishmentResponseDto> createPunishment(PunishmentRequestDto punishment) {
+  public ResponseEntity<PunishmentResponseDto> createPunishment(
+      @Valid PunishmentRequestDto punishment) {
     PunishmentResponseDto responseDto = punishmentService.createPunishment(punishment);
     URI location =
         ServletUriComponentsBuilder.fromCurrentRequest()
