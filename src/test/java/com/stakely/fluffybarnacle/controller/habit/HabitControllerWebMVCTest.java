@@ -1,10 +1,10 @@
-package com.stakely.fluffybarnacle.controller;
+package com.stakely.fluffybarnacle.controller.habit;
 
+import com.stakely.fluffybarnacle.controller.HabitController;
 import com.stakely.fluffybarnacle.dto.habit.HabitCompletionResponseDto;
 import com.stakely.fluffybarnacle.dto.habit.HabitRequestDto;
 import com.stakely.fluffybarnacle.dto.habit.HabitResponseDto;
 import com.stakely.fluffybarnacle.dto.punishment.PunishmentRequestDto;
-import com.stakely.fluffybarnacle.dto.punishment.PunishmentResponseDto;
 import com.stakely.fluffybarnacle.model.HabitCompletion;
 import com.stakely.fluffybarnacle.model.Punishment;
 import com.stakely.fluffybarnacle.service.HabitCompletionService;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(HabitController.class)
-public class HabitControllerTest {
+public class HabitControllerWebMVCTest {
 
   @Autowired private MockMvc mockMvc;
 
