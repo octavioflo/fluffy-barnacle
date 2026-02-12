@@ -19,7 +19,11 @@ import java.util.List;
 @RequestMapping("/api/v1/punishments")
 public class PunishmentController {
 
-  @Autowired PunishmentService punishmentService;
+  private final PunishmentService punishmentService;
+
+  public PunishmentController(PunishmentService punishmentService) {
+    this.punishmentService = punishmentService;
+  }
 
   @GetMapping
   public List<PunishmentResponseDto> getPunishments() {
