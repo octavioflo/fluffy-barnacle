@@ -44,7 +44,7 @@ public class HabitController {
     URI location =
         ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(newHabit.getId())
+            .buildAndExpand(newHabit.id())
             .toUri();
     return ResponseEntity.created(location).body(newHabit);
   }
@@ -58,7 +58,7 @@ public class HabitController {
   public ResponseEntity<List<HabitCompletionResponseDto>> markCompletion(
       @PathVariable UUID id, @Valid @RequestBody HabitCompletionResponseDto request) {
     HabitCompletion habitCompletion =
-        completionService.markHabitCompleted(id, request.getDateCompleted());
+        completionService.markHabitCompleted(id, request.dateCompleted());
     HabitCompletionResponseDto responseDto =
         new HabitCompletionResponseDto(habitCompletion.getDateCompleted());
     URI location =

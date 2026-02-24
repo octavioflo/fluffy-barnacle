@@ -29,7 +29,7 @@ public class PunishmentService {
   }
 
   public PunishmentResponseDto createPunishment(PunishmentRequestDto punishment) {
-    Punishment newPunishment = new Punishment(punishment.getType(), punishment.getDetails());
+    Punishment newPunishment = new Punishment(punishment.type(), punishment.details());
     punishmentRepository.save(newPunishment);
     return new PunishmentResponseDto(
         newPunishment.getId(), newPunishment.getType(), newPunishment.getDetails());

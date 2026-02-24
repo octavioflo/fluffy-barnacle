@@ -39,7 +39,7 @@ public class PunishmentTest {
 
   @Test
   void testCreatePunishment() {
-    PunishmentRequestDto punishmentRequestDto = new PunishmentRequestDto();
+    PunishmentRequestDto punishmentRequestDto = new PunishmentRequestDto("type", "details");
     PunishmentResponseDto punishmentResponseDto =
         new PunishmentResponseDto(UUID.randomUUID(), "type", "details");
     when(punishmentService.createPunishment(punishmentRequestDto))

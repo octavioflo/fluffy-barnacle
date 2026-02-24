@@ -4,6 +4,7 @@ import com.stakely.fluffybarnacle.controller.HabitController;
 import com.stakely.fluffybarnacle.dto.habit.HabitCompletionResponseDto;
 import com.stakely.fluffybarnacle.dto.habit.HabitRequestDto;
 import com.stakely.fluffybarnacle.dto.habit.HabitResponseDto;
+import com.stakely.fluffybarnacle.dto.punishment.PunishmentRequestDto;
 import com.stakely.fluffybarnacle.model.HabitCompletion;
 import com.stakely.fluffybarnacle.service.HabitCompletionService;
 import com.stakely.fluffybarnacle.service.HabitService;
@@ -47,8 +48,8 @@ public class HabitControllerTest {
 
   @Test
   void testGetHabitById() {
-    HabitResponseDto responseDto = new HabitResponseDto();
     UUID id = UUID.randomUUID();
+    HabitResponseDto responseDto = new HabitResponseDto(id, null, null, null, null, List.of());
     when(habitService.getHabitById(id)).thenReturn(responseDto);
     HabitResponseDto habit = habitController.getHabitById(id);
     assertEquals(habit, responseDto);
@@ -56,10 +57,11 @@ public class HabitControllerTest {
 
   @Test
   void testCreateHabit() {
-    HabitRequestDto habitRequestDto = new HabitRequestDto();
-    HabitResponseDto responseDto = new HabitResponseDto();
+    HabitRequestDto habitRequestDto =
+        new HabitRequestDto("name", "desc", new PunishmentRequestDto("ptype", "pdetails"));
     UUID id = UUID.randomUUID();
-    responseDto.setId(id);
+    HabitResponseDto responseDto =
+        new HabitResponseDto(id, "name", "desc", LocalDate.now(), null, List.of());
     when(habitService.createHabit(habitRequestDto)).thenReturn(responseDto);
     ResponseEntity<HabitResponseDto> response = habitController.createHabit(habitRequestDto);
     assertEquals(response.getBody(), responseDto);

@@ -66,38 +66,34 @@ public class HabitServiceTest {
 
     HabitResponseDto habit = habitService.getHabitById(id);
     assertNotNull(habit);
-    assertEquals(id, habit.getId());
-    assertEquals("name", habit.getName());
+    assertEquals(id, habit.id());
+    assertEquals("name", habit.name());
   }
 
   @Test
   public void testCreateHabit() {
-    HabitRequestDto request = new HabitRequestDto();
-    request.setName("newname");
-    request.setDescription("newdesc");
-    PunishmentRequestDto p = new PunishmentRequestDto();
-    p.setType("ptype");
-    p.setDetails("pdetails");
-    request.setPunishment(p);
+    HabitRequestDto request =
+        new HabitRequestDto("newname", "newdesc", new PunishmentRequestDto("ptype", "pdetails"));
 
     Habit saved = new Habit();
     UUID id = UUID.randomUUID();
     saved.setId(id);
-    saved.setName(request.getName());
-    saved.setDescription(request.getDescription());
-    saved.setPunishment(new Punishment(p.getType(), p.getDetails()));
+    saved.setName(request.name());
+    saved.setDescription(request.description());
+    saved.setPunishment(
+        new Punishment(request.punishment().type(), request.punishment().details()));
 
     when(habitRepository.save(any(Habit.class))).thenReturn(saved);
 
     HabitResponseDto response = habitService.createHabit(request);
     assertNotNull(response);
-    assertEquals(id, response.getId());
+    assertEquals(id, response.id());
 
     ArgumentCaptor<Habit> captor = ArgumentCaptor.forClass(Habit.class);
     verify(habitRepository).save(captor.capture());
     Habit toSave = captor.getValue();
-    assertEquals(request.getName(), toSave.getName());
-    assertEquals(request.getDescription(), toSave.getDescription());
+    assertEquals(request.name(), toSave.getName());
+    assertEquals(request.description(), toSave.getDescription());
     assertNotNull(toSave.getPunishment());
   }
 }

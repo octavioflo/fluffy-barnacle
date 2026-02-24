@@ -10,14 +10,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class HabitResponseDto {
-  private UUID id;
-  private String name;
-  private String description;
-  private LocalDate dateCreated;
-  private Punishment punishment;
-  private List<HabitCompletion> completions;
-}
+public record HabitResponseDto(
+    UUID id,
+    String name,
+    String description,
+    LocalDate dateCreated,
+    Punishment punishment,
+    List<HabitCompletion> completions) {}

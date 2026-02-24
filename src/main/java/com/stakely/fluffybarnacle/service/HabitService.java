@@ -53,15 +53,15 @@ public class HabitService {
   }
 
   public HabitResponseDto createHabit(HabitRequestDto habit) {
-    PunishmentRequestDto punishmentRequestDto = habit.getPunishment();
+    PunishmentRequestDto punishmentRequestDto = habit.punishment();
 
     Habit newHabit =
         habitRepository.save(
             new Habit(
-                habit.getName(),
-                habit.getDescription(),
+                habit.name(),
+                habit.description(),
                 LocalDate.now(),
-                new Punishment(punishmentRequestDto.getType(), punishmentRequestDto.getDetails()),
+                new Punishment(punishmentRequestDto.type(), punishmentRequestDto.details()),
                 new ArrayList<>()));
     return new HabitResponseDto(
         newHabit.getId(),

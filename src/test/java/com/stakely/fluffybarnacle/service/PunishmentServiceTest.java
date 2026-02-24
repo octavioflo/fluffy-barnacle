@@ -56,8 +56,8 @@ public class PunishmentServiceTest {
 
     PunishmentResponseDto responseDto = punishmentService.createPunishment(requestDto);
 
-    assertEquals(punishment.getType(), responseDto.getType());
-    assertEquals(punishment.getDetails(), responseDto.getDetails());
+    assertEquals(punishment.getType(), responseDto.type());
+    assertEquals(punishment.getDetails(), responseDto.details());
   }
 
   @Test

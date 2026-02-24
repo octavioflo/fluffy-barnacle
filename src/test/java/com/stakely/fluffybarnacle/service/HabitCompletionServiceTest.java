@@ -40,7 +40,7 @@ public class HabitCompletionServiceTest {
 
     var dtos = service.findByHabitId(id);
     assertEquals(1, dtos.size());
-    assertEquals(completion.getDateCompleted(), dtos.get(0).getDateCompleted());
+    assertEquals(completion.getDateCompleted(), dtos.get(0).dateCompleted());
   }
 
   @Test
